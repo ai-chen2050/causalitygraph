@@ -50,6 +50,8 @@ Creating a research subspace with specialized operation types:
 | 30503 | Review | Submit structured review of a paper | ["auth", "d":"subspace_op", "op":"review", "sid", "paper_id", "rating", "aspects"] |
 | 30504 | AI_Analysis | Request or submit AI analysis results | ["auth", "d":"subspace_op", "op":"ai_analysis", "sid", "analysis_type", "paper_ids", "prompt"] |
 | 30505 | Discussion | Create or contribute to research discussions | ["auth", "d":"subspace_op", "op":"discussion", "sid", "topic", "parent", "references"] |
+| 30506 | ReadPaper | Record reading behavior and depth for a paper | ["auth", "d":"subspace_op", "op":"read_paper", "sid", "paper_id", "user_id", "duration", "depth"] |
+| 30507 | CoCreatePaper | Collaborative paper creation and publishing | ["auth", "d":"subspace_op", "op":"co_create_paper", "sid", "paper_id", "user_ids", "quality"] |
 
 ## 4. Operation Event Details
 
@@ -129,37 +131,54 @@ Used for structured reviews of research papers.
 }
 ```
 
-### 4.4 Task Event (Reused Kind 30102)
+### 4.4 ReadPaper Event (Kind 30506)
 
-Used for research task management within collaborative spaces.
+Used to record reading behavior and depth for a paper.
 
 ```json
 {
   "id": "<32 bytes lowercase hex-encoded sha256 hash of the serialized event data>",
   "pubkey": "<32 bytes lowercase hex-encoded ETH address of the event creator>",
   "created_at": "<Unix timestamp in seconds>",
-  "kind": 30102,
+  "kind": 30506,
   "tags": [
-    ["auth", "action=3", "key=30102", "exp=500000"],
+    ["auth", "action=2", "key=30506", "exp=500000"],
     ["d", "subspace_op"],
+    ["op", "read_paper"],
     ["sid", "0xOR"],
-    ["op", "task"],
-    ["task_type", "literature_review"],
-    ["assignee", "<assignee_address>"],
-    ["deadline", "<unix_timestamp>"],
-    ["status", "in_progress"],
-    ["priority", "high"],
+    ["paper_id", "<paper_event_id>"],
+    ["user_id", "<user_address>"],
+    ["duration", "3600"],
+    ["depth", "detailed"]
   ],
-  "content": "{\"title\":\"Review recent advances in quantum computing algorithms\",\"description\":\"Compile a comprehensive review of papers published in the last 2 years on quantum computing algorithms for optimization problems.\",\"deliverables\":\"Summary report with comparative analysis\",\"related_papers\", \"<paper_id1>,<paper_id2>\"}",
+  "content": "{\"notes\":\"Focused reading on methodology section\",\"highlights\":[\"key finding 1\",\"key finding 2\"]}",
   "sig": "<ETH signature>"
 }
 ```
 
-### 4.5 Graph Event (Reused Kind 30103/30104)
+### 4.5 CoCreatePaper Event (Kind 30507)
 
-Used to build and maintain the research knowledge graph.
+Used for collaborative paper creation and publishing.
 
-Please refer to [CommonGraphKey](./CommonGraphKey.md) Entity and Relation event defination.
+```json
+{
+  "id": "<32 bytes lowercase hex-encoded sha256 hash of the serialized event data>",
+  "pubkey": "<32 bytes lowercase hex-encoded ETH address of the event creator>",
+  "created_at": "<Unix timestamp in seconds>",
+  "kind": 30507,
+  "tags": [
+    ["auth", "action=3", "key=30507", "exp=500000"],
+    ["d", "subspace_op"],
+    ["op", "co_create_paper"],
+    ["sid", "0xOR"],
+    ["paper_id", "<paper_event_id>"],
+    ["user_ids", "<user1_address>,<user2_address>,<user3_address>"],
+    ["quality", "high"]
+  ],
+  "content": "{\"title\":\"Collaborative Research Paper\",\"abstract\":\"...\",\"contributions\":{\"<user1_address>\":\"methodology\",\"<user2_address>\":\"experiments\",\"<user3_address>\":\"analysis\"}}",
+  "sig": "<ETH signature>"
+}
+```
 
 ### 4.6 AI_Analysis Event (Kind 30504)
 
@@ -208,6 +227,38 @@ Used for threaded discussions about research topics.
   "sig": "<ETH signature>"
 }
 ```
+
+### 4.8 Task Event (Reused Kind 30102)
+
+Used for research task management within collaborative spaces.
+
+```json
+{
+  "id": "<32 bytes lowercase hex-encoded sha256 hash of the serialized event data>",
+  "pubkey": "<32 bytes lowercase hex-encoded ETH address of the event creator>",
+  "created_at": "<Unix timestamp in seconds>",
+  "kind": 30102,
+  "tags": [
+    ["auth", "action=3", "key=30102", "exp=500000"],
+    ["d", "subspace_op"],
+    ["sid", "0xOR"],
+    ["op", "task"],
+    ["task_type", "literature_review"],
+    ["assignee", "<assignee_address>"],
+    ["deadline", "<unix_timestamp>"],
+    ["status", "in_progress"],
+    ["priority", "high"],
+  ],
+  "content": "{\"title\":\"Review recent advances in quantum computing algorithms\",\"description\":\"Compile a comprehensive review of papers published in the last 2 years on quantum computing algorithms for optimization problems.\",\"deliverables\":\"Summary report with comparative analysis\",\"related_papers\", \"<paper_id1>,<paper_id2>\"}",
+  "sig": "<ETH signature>"
+}
+```
+
+### 4.9 Graph Event (Reused Kind 30103/30104)
+
+Used to build and maintain the research knowledge graph.
+
+Please refer to [CommonGraphKey](./CommonGraphKey.md) Entity and Relation event defination.
 
 ## 5. Integration with Governance and Existing Subspaces
 

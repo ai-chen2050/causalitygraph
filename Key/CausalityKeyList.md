@@ -73,3 +73,29 @@ A set of keys can be converted into VLC, representing causality
 | 30503 | Review | Submit structured review of a paper | ["auth", "d":"subspace_op", "op":"review", "sid", "paper_id", "rating", "aspects"] |
 | 30504 | AI_Analysis | Request or submit AI analysis results | ["auth", "d":"subspace_op", "op":"ai_analysis", "sid", "analysis_type", "paper_ids", "prompt"] |
 | 30505 | Discussion | Create or contribute to research discussions | ["auth", "d":"subspace_op", "op":"discussion", "sid", "topic", "parent", "references"] |
+| 30506 | ReadPaper | Record reading behavior and depth for a paper | ["auth", "d":"subspace_op", "op":"read_paper", "sid", "paper_id", "user_id", "duration", "depth"] |
+| 30507 | CoCreatePaper | Collaborative paper creation and publishing | ["auth", "d":"subspace_op", "op":"co_create_paper", "sid", "paper_id", "user_ids", "quality"] |
+
+### Social Actions (CIP 06)
+
+| Kind Value | Event Name     | Purpose/Scope                  | Key Tags Structure |
+|------------|---------------|--------------------------------|--------------------|
+| 30600      | Like          | Like any object (paper, post, etc.) | ["auth", "d":"subspace_op", "op":"like", "sid", "object_id", "user_id"] |
+| 30601      | Collect       | Collect/favorite any object    | ["auth", "d":"subspace_op", "op":"collect", "sid", "object_id", "user_id"] |
+| 30602      | Share         | Share any object to a platform | ["auth", "d":"subspace_op", "op":"share", "sid", "object_id", "user_id", "platform", "clicks"] |
+| 30603      | Comment       | Comment on any object          | ["auth", "d":"subspace_op", "op":"comment", "sid", "object_id", "user_id", "parent", "content"] |
+| 30604      | Tag           | Tag/label any object           | ["auth", "d":"subspace_op", "op":"tag", "sid", "object_id", "tag"] |
+| 30605      | Follow        | Follow any user or entity      | ["auth", "d":"subspace_op", "op":"follow", "sid", "user_id", "target_id"] |
+| 30606      | Unfollow      | Unfollow any user or entity    | ["auth", "d":"subspace_op", "op":"unfollow", "sid", "user_id", "target_id"] |
+| 30607      | Question      | Ask a question about any object| ["auth", "d":"subspace_op", "op":"question", "sid", "object_id", "user_id", "content", "quality"] |
+| 30608      | Room           | Represents a chat room     | ["auth", "d":"subspace_op", "op":"room", "sid", "name", "description", "members"] |
+| 30609      | MessageInRoom        | Represents a chat message in a room | ["auth", "d":"subspace_op", "op":"message", "sid", "room_id", "content", "reply_to", "mentions"] |
+
+### Community Actions (CIP 07)
+
+| Kind Value | Event Name        | Purpose/Scope                  | Key Tags Structure |
+|------------|------------------|-------------------------------|--------------------|
+| 30700      | CommunityCreate  | Create a community            | ["auth", "d":"subspace_op", "op":"community_create", "sid", "community_id", "name", "type"] |
+| 30701      | CommunityInvite  | Invite user to a community    | ["auth", "d":"subspace_op", "op":"community_invite", "sid", "community_id", "inviter_id", "invitee_id", "method"] |
+| 30702      | ChannelCreate    | Create a channel in a community| ["auth", "d":"subspace_op", "op":"channel_create", "sid", "community_id", "channel_id", "name", "type"] |
+| 30703      | ChannelMessage   | Post a message in a channel   | ["auth", "d":"subspace_op", "op":"channel_message", "sid", "channel_id", "user_id", "content", "reply_to"] |
